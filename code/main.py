@@ -25,7 +25,7 @@ from classification import basic_classification, centroid, svm_rbf
 ## READING IN DATA    
 
 # Read Data set
-df = pd.read_csv("SCC403CWWeatherData.txt")
+df = pd.read_csv("../data/SCC403CWWeatherData.txt")
 
 # Assign Column Names
 df.columns = ['temp.min', 'temp.max', 'temp.mean',
