@@ -103,10 +103,10 @@ y2_2 = birch2(T2, 10)
 # mini-batch k-means clustering
 y3_2 = miniBatchKMeans2(T2, 10, 100)
 # create an OPTICS graph
-optics2(T2, 100)
+optics(T2, 100)
 
 # Plot Dendogram
-dendogram2(T2)
+dendogram(T2)
 
 # Calculate cluster differences
 metrics.adjusted_rand_score(y1_2, y2_2)

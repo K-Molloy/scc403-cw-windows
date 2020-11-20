@@ -17,8 +17,15 @@ from scipy.cluster.hierarchy import dendrogram
 from sklearn.metrics.pairwise import pairwise_distances_argmin 
 
 def kmeans(X, n):
-    # X : np matrix : data values
-    # n : n clusters
+    """ Using the K-Means clustering algorithm, group the data X into n clusters
+
+    Args:
+        X (MxN float numpy array): Data as columns
+        n (int, optional): Number of Clusters. Defaults to 10.
+
+    Returns:
+        (1xN integer numpy array): Generated Classification Labels
+    """
     
     # Define model
     kme = KMeans(init ='k-means++', n_clusters=n)
@@ -51,9 +58,16 @@ def kmeans(X, n):
     return y_pred
     
 def miniBatchKMeans(X, n, b):
-    # X : np matrix : data values
-    # n : n clusters    
-    # b : batch size
+    """ Using the MiniBatch K-Means Clustering algorithm, group the data X into n clusters with a batch size of b
+
+    Args:
+        X (MxN float numpy array): Data as column
+        n (int, optional): Number of Clusters. Defaults to 10.
+        b (int, optional): Batch Sizing. Defaults to 100.
+
+    Returns:
+        1xN integer numpy array: Generated Classification Labels
+    """
     
     # perform the mini batch K-means 
     mbk = MiniBatchKMeans(init ='k-means++', n_clusters = n, 
@@ -89,8 +103,15 @@ def miniBatchKMeans(X, n, b):
     return y_pred
     
 def birch(X, n):
-    # X : np matrix : data values
-    # n : n clusters
+    """ Using the Birch clustering algorithm, group the data X into n clusters
+
+    Args:
+        X (MxN float numpy array): Data as columns
+        n (int, optional): Number of Clusters. Defaults to 10.
+
+    Returns:
+        (1xN integer numpy array): Generated Classification Labels
+    """
     
     bir = Birch(n_clusters=n)
     # Create Plot and Axes
@@ -121,8 +142,12 @@ def birch(X, n):
     
     
 def optics(X, n_points_per_cluster = 250):
-    # X : np matrix : data values
-    # n : n points per clusters : default = 250
+    """Generate a few graphs.... come back to me pls <3
+
+    Args:
+        X (MxN float numpy array): Data as columns
+        n_points_per_cluster (int, optional): Max Points in each cluster. Defaults to 250.
+    """
     
     
     clust = OPTICS(min_samples=50, xi=.05, min_cluster_size=.05)
