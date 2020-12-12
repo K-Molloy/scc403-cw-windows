@@ -57,7 +57,7 @@ def kmeans(X, n):
     # Return prediction
     return y_pred
     
-def miniBatchKMeans(X, n, b):
+def mini_batch_kmeans(X, n, b):
     """ Using the MiniBatch K-Means Clustering algorithm, group the data X into n clusters with a batch size of b
 
     Args:
@@ -150,10 +150,12 @@ def optics(X, n_points_per_cluster = 250):
     """
     
     
-    clust = OPTICS(min_samples=50, xi=.05, min_cluster_size=.05)
+    clust = OPTICS(min_samples=5, cluster_method="xi")
 
     # Run the fit
     clust.fit(X)
+    
+    return clust.labels_
     
     labels_050 = cluster_optics_dbscan(reachability=clust.reachability_,
                                        core_distances=clust.core_distances_,
@@ -212,8 +214,10 @@ def optics(X, n_points_per_cluster = 250):
     plt.tight_layout()
     plt.show()
     
+    return clust.labels_
     
-def dendogram(X):
+    
+def create_dendrogram(X):
     # setting distance_threshold=0 ensures we compute the full tree.
     model = AgglomerativeClustering(distance_threshold=0, n_clusters=None)
     

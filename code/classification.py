@@ -34,8 +34,9 @@ def basic_classification(X, y):
     y_pred = clf.predict(X_test)
     
     # Determine Accuracy?
-    print("Accuracy:",metrics.accuracy_score(y_test, y_pred))
+    print("Accuracy: {0}".format(metrics.accuracy_score(y_test, y_pred)))
     
+    # Print Class Report 
     print(metrics.classification_report(y_test, y_pred))
     
     
@@ -52,12 +53,12 @@ def centroid(X, y, n = 15, h = 0.02):
     """ 
 
     # Do for no shrinkage and also .2 shrinkage
-    for shrinkage in [None, .2]:
+    for shrinkage in [.2]:
         # we create an instance of Neighbours Classifier and fit the data.
         clf = NearestCentroid(shrink_threshold=shrinkage)
         clf.fit(X, y)
         y_pred = clf.predict(X)
-        print(shrinkage, np.mean(y == y_pred))
+        print("Shrinkage : {0} Average : {1}".format(shrinkage, np.mean(y == y_pred)))
         # Plot the decision boundary. For that, we will assign a color to each
         # point in the mesh [x_min, x_max]x[y_min, y_max].
         x_min, x_max = X[:, 0].min() - 1, X[:, 0].max() + 1
@@ -74,8 +75,7 @@ def centroid(X, y, n = 15, h = 0.02):
         # Plot also the training points
         plt.scatter(X[:, 0], X[:, 1], c=y, cmap=plt.cm.Paired,
                     edgecolor='k', s=20)
-        plt.title("Multi-Class NN classification (shrink_threshold=%r)"
-                  % shrinkage)
+        plt.title("Multi-Class NN classification (shrink_threshold={0})".format(shrinkage))
         plt.axis('tight')
     
     plt.show()
@@ -108,7 +108,6 @@ def svm_rbf(X, y, h = .02):
     
     # Plot also the training points
     plt.scatter(X[:, 0], X[:, 1], c=y, cmap=plt.cm.Paired, edgecolors='k')
-    plt.title('Multi-Class classification using Support Vector Machine with custom'
-              ' kernel')
+    plt.title('Multi-Class classification using Support Vector Machine using RBF')
     plt.axis('tight')
     plt.show()

@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 
 from mpl_toolkits.mplot3d import Axes3D
 from sklearn.decomposition import PCA
+from sklearn.preprocessing import KBinsDiscretizer
 
 def pca_transform(df, n):
     """Takes a pandas dataframe or numpy array and performs PCA reduction into n dimensions. Returning a tuple of XxN numpy array and XxN pandas dataframe
@@ -38,6 +39,9 @@ def pca_transform(df, n):
     # return tuple numpy array, pandas dataframe
     return T, pandaT
 
+
+## PLOTS AND ANALYSIS FUNCTIONS
+
 def pca_analysis(df):
     """Takes a pandas dataframe or numpy array and calculates the variance for each PCA(n) where n is 0 -> size of data. Plotting a graph with a horizontal line at 90% threshold
 
@@ -51,14 +55,16 @@ def pca_analysis(df):
     pca = PCA().fit(df)
     
     # Initialise new figure
-    plt.figure()    
+    plt.figure(figsize=(5, 4))    
     # Plot variances
     plt.plot(np.cumsum(pca.explained_variance_ratio_))
     # Plot Horizontal Line
-    plt.axhline(y=0.9, color='r', linestyle='-')
+    plt.axhline(y=0.95, color='r', linestyle='-')
     # Axis Labels
-    plt.xlabel('number of components')
-    plt.ylabel('cumulative explained variance')
+    plt.xlabel('PC Components')
+    plt.ylabel('Cumulative Explained variance')
+    plt.savefig("figures/PCA-Analysis", facecolor="w", edgecolor="w",
+                dpi=300)
     
     
 def pca_3_plot_basic(df):
@@ -112,3 +118,16 @@ def pca_3_labels(df, y):
     ax.w_yaxis.set_ticklabels([])
     ax.set_zlabel("3rd eigenvector")
     ax.w_zaxis.set_ticklabels([])
+    
+    
+def pca_variance(df, n):
+    
+    # Define model
+    pca = PCA(n_components=n).fit(df)
+    
+    # Make plot stuff
+    plt.figure()
+    plt.bar(list(range(n)), pca.explained_variance_ratio_)
+    plt.xlabel("P Component")
+    plt.ylabel("Var Explained %")
+    

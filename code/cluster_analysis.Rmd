@@ -1,0 +1,121 @@
+---
+title: "SCC403 Cluster Analysis"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+```{r}
+pkgs <- c("factoextra",  "NbClust")
+install.packages(pkgs)
+```
+
+```{r}
+library(factoextra)
+library(NbClust)
+library(cluster)
+```
+
+```{r}
+df_raining = read.csv("../data/df_raining.csv")
+df_snowing = read.csv("../data/df_snowing.csv")
+df_standard = read.csv("../data/df_standard.csv")
+
+df = df_standard
+
+# Assign Column Names
+#colnames(df) = c('temp.min', 'temp.max', 'temp.mean',
+#              'hum.min', 'hum.max', 'hum.mean',
+#              'press.min', 'press.max', 'press.mean',
+#              'precipipitation', 'snowfall', 'sunshine',
+#              'gust.min', 'gust.max', 'gust.mean',
+#              'speed.min', 'speed.max', 'speed.mean')
+
+# Assign Column Names
+colnames(df) = c('temp.min', 'temp.max', 'temp.mean',
+              'hum.min', 'hum.max', 'hum.mean',
+              'press.min', 'press.max', 'press.mean',
+              'sunshine',
+              'gust.min', 'gust.max', 'gust.mean',
+              'speed.min', 'speed.max', 'speed.mean')
+
+head(df)
+
+```
+
+```{r}
+df = scale(df)
+head(df)
+```
+
+```{r}
+# Elbow method
+fviz_nbclust(df, kmeans, method = "wss") +
+    geom_vline(xintercept = 4, linetype = 2)+
+  labs(subtitle = "Elbow method") +
+  ggsave("elbow.png")
+```
+
+```{r}
+# Silhouette method
+fviz_nbclust(df, kmeans, method = "silhouette")+
+  labs(subtitle = "Silhouette method") +
+  ggsave("silhouette.png")
+```
+
+```{r}
+# Gap statistic
+# nboot = 50 to keep the function speedy. 
+# recommended value: nboot= 500 for your analysis.
+# Use verbose = FALSE to hide computing progression.
+fviz_nbclust(df, kmeans, nstart = 25,  method = "gap_stat", nboot = 500)+
+  labs(subtitle = "Gap statistic method") +
+  ggsave("gap1.png")
+```
+```{r}
+# Gap statistic
+# nboot = 50 to keep the function speedy. 
+# recommended value: nboot= 500 for your analysis.
+# Use verbose = FALSE to hide computing progression.
+fviz_nbclust(df, kmeans, nstart = 25,diss = "canberra",  method = "gap_stat", nboot = 10)+
+  labs(subtitle = "Gap statistic method") +
+  ggsave("gap1.png")
+```
+
+```{r}
+# NBClust
+
+NbClust(data=df,
+        diss=NULL,
+        distance="canberra",
+        method="centroid",
+        min.nc = 4,
+        max.nc = 20,
+        index = "all",
+        alphaBeale=0.1)
+```
+
+```{r}
+gap_stat <- clusGap(df, FUN = kmeans, nstart = 25,
+ K.max = 10, B = 10)
+ print(gap_stat, method = "firstmax")
+fviz_gap_stat(gap_stat)
+
+```
+
+```{r}
+ 
+# Gap statistic for hierarchical clustering
+gap_stat <- clusGap(df, FUN = hcut, K.max = 10, B = 500)
+fviz_gap_stat(gap_stat) +
+  ggsave("hcut.png")
+```
+
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
